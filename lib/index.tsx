@@ -1,3 +1,3 @@
-import YourLibNameComponent from './components/YourLibNameComponent'
+import AreaSelectContainer from './components/AreaSelectContainer'
 
-export default YourLibNameComponent
+export default AreaSelectContainer

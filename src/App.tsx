@@ -2,7 +2,7 @@ import React from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
 
-import YourLibNameComponent from '../lib'
+import AreaSelectContainer from '../lib'
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
         </p>
       </div>
 
-      <YourLibNameComponent />
+      <AreaSelectContainer />
     </div>
   )
 }
