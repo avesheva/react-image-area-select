@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import CanvasApiClass from '../utils/CanvasApiClass'
-import SelectAreaApiClass from '../utils/SelectAreaApiClass'
 import SelectedAreaBlock from './SelectedAreaBlock'
+import { DirectionType, OperationType } from '../types'
 
 export interface IProps {
   id?: string,
@@ -19,6 +19,9 @@ export interface ISelectedAreaCoordinates {
   height: number,
 }
 
+let movingAreaIndex: number | null = null
+let resizingAreaIndex: number | null = null
+
 const AreaSelectContainer: FC<IProps> = ({
   id = 'imageSelectArea',
   width = 400,
@@ -29,7 +32,52 @@ const AreaSelectContainer: FC<IProps> = ({
 }) => {
   const [areasList, setAreasList] = useState<ISelectedAreaCoordinates[]>([])
   let canvasApiObj: CanvasApiClass | null = null
-  let selectAreaApiObj: SelectAreaApiClass | null = null
+
+  const draggingItemStartPos = {
+    offsetX: 0,
+    offsetY: 0,
+  }
+
+  const resizingItemStartPos = {
+    direction: '',
+  }
+
+  const mouseUpHandler = () => {
+    draggingItemStartPos.offsetY = 0
+    draggingItemStartPos.offsetX = 0
+
+    movingAreaIndex = null
+    resizingAreaIndex = null
+  }
+
+  const mouseMoveHandler = (e: MouseEvent) => {
+    if (movingAreaIndex !== null) {
+      requestAnimationFrame(() => {
+        setAreasList(areas => {
+          if (movingAreaIndex !== null) {
+            const area = { ...areas[movingAreaIndex] }
+            area.x += e.movementX
+            area.y += e.movementY
+
+            areas[movingAreaIndex] = area
+          }
+
+          return [...areas]
+        })
+      })
+    } else if (resizingAreaIndex !== null) {
+      console.log('RESIZING ... ', e)
+    }
+  }
+
+  const mouseDownHandler = (e: MouseEvent, index: number, operation: OperationType, direction?: DirectionType) => {
+    if (operation === 'dragging') {
+      movingAreaIndex = index
+    } else if (direction && operation === 'resize') {
+      resizingItemStartPos.direction = direction
+      resizingAreaIndex = index
+    }
+  }
 
   useEffect(() => {
     if (canvasApiObj) return
@@ -38,9 +86,6 @@ const AreaSelectContainer: FC<IProps> = ({
 
     if (canvasElement) {
       canvasApiObj = new CanvasApiClass(canvasElement, borderWidth, borderColor)
-      selectAreaApiObj = new SelectAreaApiClass()
-
-      console.log('API :: ', selectAreaApiObj)
 
       canvasElement.addEventListener('area-selected', ((e: CustomEvent) => {
         setAreasList(oldList => {
@@ -68,6 +113,9 @@ const AreaSelectContainer: FC<IProps> = ({
           borderWidth={ borderWidth }
           borderColor={ borderColor }
           coordinates={ areaItem }
+          mouseUpHandler={ mouseUpHandler }
+          mouseMoveHandler={ mouseMoveHandler }
+          mouseDownHandler={ mouseDownHandler }
         />
       )) }
     </div>
