@@ -8,7 +8,9 @@
   "keywords": [
     "react",
     "javascript",
-    "typescript"
+    "typescript",
+    "canvas",
+    "selected area"
   ],
   "private": false,
   "main": "dist/react-image-area-select.umd.js",
