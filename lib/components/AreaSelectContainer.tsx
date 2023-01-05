@@ -79,6 +79,15 @@ const AreaSelectContainer: FC<IProps> = ({
     }
   }
 
+  const areaDeleteHandler = (index: number) => {
+    setAreasList(areas => {
+      const areasClone = [ ...areas ]
+      areasClone.splice(index, 1)
+
+      return [ ...areasClone ]
+    })
+  }
+
   useEffect(() => {
     if (canvasApiObj) return
 
@@ -116,6 +125,7 @@ const AreaSelectContainer: FC<IProps> = ({
           mouseUpHandler={ mouseUpHandler }
           mouseMoveHandler={ mouseMoveHandler }
           mouseDownHandler={ mouseDownHandler }
+          deleteHandler={ areaDeleteHandler }
         />
       )) }
     </div>

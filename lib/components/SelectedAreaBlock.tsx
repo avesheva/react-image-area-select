@@ -14,6 +14,7 @@ export interface Iprops {
   mouseDownHandler: (e: MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
   mouseMoveHandler: (e: MouseEvent) => void,
   mouseUpHandler: (e: MouseEvent) => void,
+  deleteHandler: (i: number) => void,
 }
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
@@ -36,7 +37,14 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         props.mouseMoveHandler(e.nativeEvent)
       }}
       onMouseUp={ (e) => { props.mouseUpHandler(e.nativeEvent) } }
-    />
+    >
+      <button
+        style={{ position: 'absolute', top: 0, right: 0 }}
+        onClick={ () => { props.deleteHandler(props.index) } }
+      >
+        &times;
+      </button>
+    </div>
   )
 }
 
