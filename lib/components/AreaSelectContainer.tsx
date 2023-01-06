@@ -112,7 +112,9 @@ const AreaSelectContainer: FC<IProps> = ({
       backgroundSize: 'contain',
       position: 'relative',
       borderStyle: 'solid',
-    }}>
+    }}
+    onMouseMove={ (e) => { mouseMoveHandler(e.nativeEvent) } }
+    >
       <canvas id={ id } width={ width } height={ height } />
 
       { areasList.map((areaItem, i) => (
@@ -123,7 +125,6 @@ const AreaSelectContainer: FC<IProps> = ({
           borderColor={ borderColor }
           coordinates={ areaItem }
           mouseUpHandler={ mouseUpHandler }
-          mouseMoveHandler={ mouseMoveHandler }
           mouseDownHandler={ mouseDownHandler }
           deleteHandler={ areaDeleteHandler }
         />

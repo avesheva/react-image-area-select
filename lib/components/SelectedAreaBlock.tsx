@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { DirectionType, OperationType } from '../types'
 
 export interface Iprops {
@@ -12,38 +12,89 @@ export interface Iprops {
     height: number,
   },
   mouseDownHandler: (e: MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
-  mouseMoveHandler: (e: MouseEvent) => void,
   mouseUpHandler: (e: MouseEvent) => void,
   deleteHandler: (i: number) => void,
 }
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
+  const [cursor, setCursor] = useState<'grab' | 'grabbing'>('grab')
+
   return (
-    <div
-      style={{
+    <div style={{
+      position: 'absolute',
+      width: props.coordinates.width,
+      height: props.coordinates.height,
+      top: props.coordinates.y,
+      left: props.coordinates.x,
+    }}>
+      {/* Top border */}
+      <div style={{
+        height: `${ props.borderWidth }px`,
+        background: props.borderColor,
+        top: 0,
+        cursor: 'ns-resize',
+      }}/>
+      {/* Left border */}
+      <div style={{
+        width: `${ props.borderWidth }px`,
+        height: '100%',
+        background: props.borderColor,
         position: 'absolute',
-        width: props.coordinates.width,
-        height: props.coordinates.height,
-        top: props.coordinates.y,
-        left: props.coordinates.x,
-        borderStyle: 'solid',
-        borderWidth: props.borderWidth,
-        borderColor: props.borderColor,
-      }}
-      onMouseDown={ (e) => {
-        props.mouseDownHandler(e.nativeEvent, props.index, 'dragging')
-      }}
-      onMouseMove={ (e) => {
-        props.mouseMoveHandler(e.nativeEvent)
-      }}
-      onMouseUp={ (e) => { props.mouseUpHandler(e.nativeEvent) } }
-    >
-      <button
-        style={{ position: 'absolute', top: 0, right: 0 }}
-        onClick={ () => { props.deleteHandler(props.index) } }
+        left: 0,
+        bottom: 0,
+        cursor: 'ew-resize',
+      }}/>
+
+      <div
+        style={{
+          width: '100%',
+          height: '100%',
+          cursor: cursor,
+        }}
+        onMouseDown={ (e) => {
+          e.stopPropagation()
+          if (e.button === 2) return // If mouse right button clicked
+
+          setCursor('grabbing')
+
+          props.mouseDownHandler(e.nativeEvent, props.index, 'dragging')
+        }}
+        onMouseUp={ (e) => {
+          e.stopPropagation()
+          setCursor('grab')
+
+          props.mouseUpHandler(e.nativeEvent)
+        }}
+        onContextMenu={ (e) => { e.stopPropagation() }}
       >
-        &times;
-      </button>
+        <button
+          style={{ position: 'absolute', top: 0, right: 0 }}
+          onClick={ () => { props.deleteHandler(props.index) } }
+        >
+          &times;
+        </button>
+      </div>
+
+      {/* Right border */}
+      <div style={{
+        width: `${ props.borderWidth }px`,
+        height: '100%',
+        background: props.borderColor,
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        cursor: 'ew-resize',
+      }}/>
+
+      {/* Bottom border */}
+      <div style={{
+        height: `${ props.borderWidth }px`,
+        width: '100%',
+        background: props.borderColor,
+        position: 'absolute',
+        bottom: 0,
+        cursor: 'ns-resize',
+      }}/>
     </div>
   )
 }
