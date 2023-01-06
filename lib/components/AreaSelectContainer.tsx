@@ -22,6 +22,10 @@ export interface ISelectedAreaCoordinates {
 let movingAreaIndex: number | null = null
 let resizingAreaIndex: number | null = null
 
+const resizingItemStartPos = {
+  direction: '',
+}
+
 const AreaSelectContainer: FC<IProps> = ({
   id = 'imageSelectArea',
   width = 400,
@@ -38,11 +42,9 @@ const AreaSelectContainer: FC<IProps> = ({
     offsetY: 0,
   }
 
-  const resizingItemStartPos = {
-    direction: '',
-  }
-
   const mouseUpHandler = () => {
+    console.log('MOUSE UP ... ')
+
     draggingItemStartPos.offsetY = 0
     draggingItemStartPos.offsetX = 0
 
@@ -62,11 +64,37 @@ const AreaSelectContainer: FC<IProps> = ({
             areas[movingAreaIndex] = area
           }
 
-          return [...areas]
+          return [ ...areas ]
         })
       })
     } else if (resizingAreaIndex !== null) {
-      console.log('RESIZING ... ', e)
+      requestAnimationFrame(() => {
+        setAreasList((areas) => {
+          if (resizingAreaIndex !== null) {
+            const area = { ...areasList[resizingAreaIndex] }
+
+            switch (resizingItemStartPos.direction) {
+              case 'left':
+                area.x += e.movementX
+                area.width -= e.movementX
+                break
+              case 'right':
+                area.width += e.movementX
+                break
+              case 'top':
+                area.y += e.movementY
+                area.height -= e.movementY
+                break
+              case 'down':
+                area.height += e.movementY
+            }
+
+            areas[resizingAreaIndex] = area
+          }
+
+          return [ ...areas ]
+        })
+      })
     }
   }
 

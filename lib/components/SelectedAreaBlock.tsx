@@ -21,28 +21,40 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
   return (
     <div style={{
       position: 'absolute',
-      width: props.coordinates.width,
-      height: props.coordinates.height,
-      top: props.coordinates.y,
-      left: props.coordinates.x,
+      width: `${ props.coordinates.width }px`,
+      height: `${ props.coordinates.height }px`,
+      top: `${ props.coordinates.y }px`,
+      left: `${ props.coordinates.x }px`,
     }}>
       {/* Top border */}
-      <div style={{
-        height: `${ props.borderWidth }px`,
-        background: props.borderColor,
-        top: 0,
-        cursor: 'ns-resize',
-      }}/>
+      <div
+        style={{
+          height: `${ props.borderWidth }px`,
+          background: props.borderColor,
+          top: 0,
+          cursor: 'ns-resize',
+        }}
+        onMouseDown={ (e) => {
+          e.stopPropagation()
+          props.mouseDownHandler(e, props.index, 'resize', 'top')
+        }}
+      />
       {/* Left border */}
-      <div style={{
-        width: `${ props.borderWidth }px`,
-        height: '100%',
-        background: props.borderColor,
-        position: 'absolute',
-        left: 0,
-        bottom: 0,
-        cursor: 'ew-resize',
-      }}/>
+      <div
+        style={{
+          width: `${ props.borderWidth }px`,
+          height: '100%',
+          background: props.borderColor,
+          position: 'absolute',
+          left: 0,
+          bottom: 0,
+          cursor: 'ew-resize',
+        }}
+        onMouseDown={ (e) => {
+          e.stopPropagation()
+          props.mouseDownHandler(e, props.index, 'resize', 'left')
+        }}
+      />
 
       <div
         style={{
@@ -58,6 +70,9 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
 
           props.mouseDownHandler(e, props.index, 'dragging')
         }}
+        onMouseUp={ () => {
+          setCursor('grab')
+        }}
         onContextMenu={ (e) => { e.stopPropagation() }}
       >
         <button
@@ -69,25 +84,37 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       </div>
 
       {/* Right border */}
-      <div style={{
-        width: `${ props.borderWidth }px`,
-        height: '100%',
-        background: props.borderColor,
-        position: 'absolute',
-        right: 0,
-        bottom: 0,
-        cursor: 'ew-resize',
-      }}/>
+      <div
+        style={{
+          width: `${ props.borderWidth }px`,
+          height: '100%',
+          background: props.borderColor,
+          position: 'absolute',
+          right: 0,
+          bottom: 0,
+          cursor: 'ew-resize',
+        }}
+        onMouseDown={ (e) => {
+          e.stopPropagation()
+          props.mouseDownHandler(e, props.index, 'resize', 'right')
+        }}
+      />
 
       {/* Bottom border */}
-      <div style={{
-        height: `${ props.borderWidth }px`,
-        width: '100%',
-        background: props.borderColor,
-        position: 'absolute',
-        bottom: 0,
-        cursor: 'ns-resize',
-      }}/>
+      <div
+        style={{
+          height: `${ props.borderWidth }px`,
+          width: '100%',
+          background: props.borderColor,
+          position: 'absolute',
+          bottom: 0,
+          cursor: 'ns-resize',
+        }}
+        onMouseDown={ (e) => {
+          e.stopPropagation()
+          props.mouseDownHandler(e, props.index, 'resize', 'down')
+        }}
+      />
     </div>
   )
 }
