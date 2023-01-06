@@ -50,7 +50,7 @@ const AreaSelectContainer: FC<IProps> = ({
     resizingAreaIndex = null
   }
 
-  const mouseMoveHandler = (e: MouseEvent) => {
+  const mouseMoveHandler = (e: React.MouseEvent) => {
     if (movingAreaIndex !== null) {
       requestAnimationFrame(() => {
         setAreasList(areas => {
@@ -70,7 +70,12 @@ const AreaSelectContainer: FC<IProps> = ({
     }
   }
 
-  const mouseDownHandler = (e: MouseEvent, index: number, operation: OperationType, direction?: DirectionType) => {
+  const mouseDownHandler = (
+    e: React.MouseEvent,
+    index: number,
+    operation: OperationType,
+    direction?: DirectionType,
+  ) => {
     if (operation === 'dragging') {
       movingAreaIndex = index
     } else if (direction && operation === 'resize') {
@@ -105,15 +110,17 @@ const AreaSelectContainer: FC<IProps> = ({
   }, [])
 
   return (
-    <div style={{
-      width,
-      height,
-      background: `url('${ imageUrl }') no-repeat center`,
-      backgroundSize: 'contain',
-      position: 'relative',
-      borderStyle: 'solid',
-    }}
-    onMouseMove={ (e) => { mouseMoveHandler(e.nativeEvent) } }
+    <div
+      style={{
+        width,
+        height,
+        background: `url('${ imageUrl }') no-repeat center`,
+        backgroundSize: 'contain',
+        position: 'relative',
+        borderStyle: 'solid',
+      }}
+      onMouseMove={ mouseMoveHandler }
+      onMouseUp={ mouseUpHandler }
     >
       <canvas id={ id } width={ width } height={ height } />
 
@@ -124,7 +131,6 @@ const AreaSelectContainer: FC<IProps> = ({
           borderWidth={ borderWidth }
           borderColor={ borderColor }
           coordinates={ areaItem }
-          mouseUpHandler={ mouseUpHandler }
           mouseDownHandler={ mouseDownHandler }
           deleteHandler={ areaDeleteHandler }
         />

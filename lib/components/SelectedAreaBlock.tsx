@@ -11,8 +11,7 @@ export interface Iprops {
     width: number,
     height: number,
   },
-  mouseDownHandler: (e: MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
-  mouseUpHandler: (e: MouseEvent) => void,
+  mouseDownHandler: (e: React.MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
   deleteHandler: (i: number) => void,
 }
 
@@ -57,13 +56,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
 
           setCursor('grabbing')
 
-          props.mouseDownHandler(e.nativeEvent, props.index, 'dragging')
-        }}
-        onMouseUp={ (e) => {
-          e.stopPropagation()
-          setCursor('grab')
-
-          props.mouseUpHandler(e.nativeEvent)
+          props.mouseDownHandler(e, props.index, 'dragging')
         }}
         onContextMenu={ (e) => { e.stopPropagation() }}
       >
