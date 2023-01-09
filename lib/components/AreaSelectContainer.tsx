@@ -19,12 +19,12 @@ export interface ISelectedAreaCoordinates {
   height: number,
 }
 
-let movingAreaIndex: number | null = null
-let resizingAreaIndex: number | null = null
-
 const resizingItemStartPos = {
   direction: '',
 }
+
+let movingAreaIndex: number | null = null
+let resizingAreaIndex: number | null = null
 
 const AreaSelectContainer: FC<IProps> = ({
   id = 'imageSelectArea',
@@ -37,63 +37,49 @@ const AreaSelectContainer: FC<IProps> = ({
   const [areasList, setAreasList] = useState<ISelectedAreaCoordinates[]>([])
   let canvasApiObj: CanvasApiClass | null = null
 
-  const draggingItemStartPos = {
-    offsetX: 0,
-    offsetY: 0,
-  }
-
   const mouseUpHandler = () => {
-    console.log('MOUSE UP ... ')
-
-    draggingItemStartPos.offsetY = 0
-    draggingItemStartPos.offsetX = 0
-
     movingAreaIndex = null
     resizingAreaIndex = null
   }
 
   const mouseMoveHandler = (e: React.MouseEvent) => {
     if (movingAreaIndex !== null) {
-      requestAnimationFrame(() => {
-        setAreasList(areas => {
-          if (movingAreaIndex !== null) {
-            const area = { ...areas[movingAreaIndex] }
-            area.x += e.movementX
-            area.y += e.movementY
-
-            areas[movingAreaIndex] = area
+      setAreasList(areas => {
+        return areas.map((area, index) => {
+          if (index === movingAreaIndex) {
+            area.x += e.movementX / 2
+            area.y += e.movementY / 2
           }
 
-          return [ ...areas ]
+          return area
         })
       })
+
     } else if (resizingAreaIndex !== null) {
-      requestAnimationFrame(() => {
-        setAreasList((areas) => {
-          if (resizingAreaIndex !== null) {
-            const area = { ...areasList[resizingAreaIndex] }
+      setAreasList((areas) => {
+        if (resizingAreaIndex !== null) {
+          const area = { ...areasList[resizingAreaIndex] }
 
-            switch (resizingItemStartPos.direction) {
-              case 'left':
-                area.x += e.movementX
-                area.width -= e.movementX
-                break
-              case 'right':
-                area.width += e.movementX
-                break
-              case 'top':
-                area.y += e.movementY
-                area.height -= e.movementY
-                break
-              case 'down':
-                area.height += e.movementY
-            }
-
-            areas[resizingAreaIndex] = area
+          switch (resizingItemStartPos.direction) {
+            case 'left':
+              area.x += e.movementX / 2
+              area.width -= e.movementX / 2
+              break
+            case 'right':
+              area.width += e.movementX / 2
+              break
+            case 'top':
+              area.y += e.movementY / 2
+              area.height -= e.movementY / 2
+              break
+            case 'down':
+              area.height += e.movementY / 2
           }
 
-          return [ ...areas ]
-        })
+          areas[resizingAreaIndex] = area
+        }
+
+        return [ ...areas ]
       })
     }
   }

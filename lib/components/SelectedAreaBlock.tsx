@@ -38,6 +38,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           e.stopPropagation()
           props.mouseDownHandler(e, props.index, 'resize', 'top')
         }}
+        onMouseMove={ (e) => { e.stopPropagation() } }
       />
       {/* Left border */}
       <div
@@ -54,6 +55,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           e.stopPropagation()
           props.mouseDownHandler(e, props.index, 'resize', 'left')
         }}
+        onMouseMove={ (e) => { e.stopPropagation() } }
       />
 
       <div
@@ -98,6 +100,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           e.stopPropagation()
           props.mouseDownHandler(e, props.index, 'resize', 'right')
         }}
+        onMouseMove={ (e) => { e.stopPropagation() } }
       />
 
       {/* Bottom border */}
@@ -114,6 +117,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           e.stopPropagation()
           props.mouseDownHandler(e, props.index, 'resize', 'down')
         }}
+        onMouseMove={ (e) => { e.stopPropagation() } }
       />
     </div>
   )
