@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { ChangeEvent, FC, useState } from 'react'
 import { DirectionType, OperationType } from '../types'
 
 export interface Iprops {
@@ -13,10 +13,19 @@ export interface Iprops {
   },
   mouseDownHandler: (e: React.MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
   deleteHandler: (i: number) => void,
+  commentHandler: (i: number, comment: string) => void,
 }
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
   const [cursor, setCursor] = useState<'grab' | 'grabbing'>('grab')
+  const [comment, setComment] = useState<string>('')
+
+  const changeHandler = (e: ChangeEvent) => {
+    const text = (e.target as HTMLTextAreaElement).value
+
+    setComment(text)
+    props.commentHandler(props.index, text)
+  }
 
   return (
     <div style={{
@@ -83,6 +92,12 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         >
           &times;
         </button>
+
+        <textarea
+          value={ comment }
+          style={{ position: 'absolute', top: 'calc(100% + 5px)' }}
+          onChange={ changeHandler }
+        />
       </div>
 
       {/* Right border */}

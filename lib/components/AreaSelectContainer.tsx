@@ -107,6 +107,10 @@ const AreaSelectContainer: FC<IProps> = ({
     })
   }
 
+  const commentHandler = (i: number, comment: string) => {
+    console.log('Comment handler :: ', i, comment)
+  }
+
   useEffect(() => {
     if (canvasApiObj) return
 
@@ -147,6 +151,7 @@ const AreaSelectContainer: FC<IProps> = ({
           coordinates={ areaItem }
           mouseDownHandler={ mouseDownHandler }
           deleteHandler={ areaDeleteHandler }
+          commentHandler={ commentHandler }
         />
       )) }
     </div>
