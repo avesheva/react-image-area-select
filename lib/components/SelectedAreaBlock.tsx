@@ -1,5 +1,5 @@
-import React, { ChangeEvent, FC, useState } from 'react'
-import { DirectionType, OperationType } from '../types'
+import React, { FC, FormEvent, useState } from 'react'
+import { DirectionType, OperationType, IAreaData } from '../types'
 
 export interface Iprops {
   index: number,
@@ -13,18 +13,27 @@ export interface Iprops {
   },
   mouseDownHandler: (e: React.MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
   deleteHandler: (i: number) => void,
-  commentHandler: (i: number, comment: string) => void,
+  saveData: (data: IAreaData) => void,
+  comment?: string,
 }
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
   const [cursor, setCursor] = useState<'grab' | 'grabbing'>('grab')
-  const [comment, setComment] = useState<string>('')
+  let commentText = ''
 
-  const changeHandler = (e: ChangeEvent) => {
-    const text = (e.target as HTMLTextAreaElement).value
+  const inputHandler = (e: FormEvent<HTMLDivElement>) => {
+    commentText = e.currentTarget.textContent || ''
+  }
+  const commentFieldBlurHandler = () => {
+    const data: IAreaData = {
+      index: props.index,
+      coordinates: props.coordinates,
+      comment: commentText,
+      lineWidth: props.borderWidth,
+      color: props.borderColor,
+    }
 
-    setComment(text)
-    props.commentHandler(props.index, text)
+    props.saveData(data)
   }
 
   return (
@@ -93,11 +102,22 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           &times;
         </button>
 
-        <textarea
-          value={ comment }
-          style={{ position: 'absolute', top: 'calc(100% + 5px)' }}
-          onChange={ changeHandler }
-        />
+        <div
+          contentEditable
+          suppressContentEditableWarning
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 5px)',
+            maxWidth: '200px',
+            minWidth: '80px',
+            padding: '0.5rem',
+            background: 'white',
+          }}
+          onInput={ inputHandler }
+          onBlur={ commentFieldBlurHandler }
+        >
+          { props.comment }
+        </div>
       </div>
 
       {/* Right border */}

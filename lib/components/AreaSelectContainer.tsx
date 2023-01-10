@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react'
 import CanvasApiClass from '../utils/CanvasApiClass'
 import SelectedAreaBlock from './SelectedAreaBlock'
-import { DirectionType, OperationType } from '../types'
+import { DirectionType, OperationType, IAreaData } from '../types'
 
 export interface IProps {
   id?: string,
@@ -10,6 +10,7 @@ export interface IProps {
   borderWidth?: number,
   borderColor?: string,
   imageUrl: string,
+  saveData: (data: IAreaData) => void
 }
 
 export interface ISelectedAreaCoordinates {
@@ -33,6 +34,7 @@ const AreaSelectContainer: FC<IProps> = ({
   borderWidth = 2,
   borderColor = 'black',
   imageUrl = '',
+  saveData,
 }) => {
   const [areasList, setAreasList] = useState<ISelectedAreaCoordinates[]>([])
   let canvasApiObj: CanvasApiClass | null = null
@@ -107,10 +109,6 @@ const AreaSelectContainer: FC<IProps> = ({
     })
   }
 
-  const commentHandler = (i: number, comment: string) => {
-    console.log('Comment handler :: ', i, comment)
-  }
-
   useEffect(() => {
     if (canvasApiObj) return
 
@@ -151,7 +149,7 @@ const AreaSelectContainer: FC<IProps> = ({
           coordinates={ areaItem }
           mouseDownHandler={ mouseDownHandler }
           deleteHandler={ areaDeleteHandler }
-          commentHandler={ commentHandler }
+          saveData={ saveData }
         />
       )) }
     </div>
