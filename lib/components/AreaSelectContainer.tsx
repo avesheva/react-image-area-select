@@ -37,7 +37,7 @@ const AreaSelectContainer: FC<IProps> = ({
   saveData,
 }) => {
   const [areasList, setAreasList] = useState<ISelectedAreaCoordinates[]>([])
-  let canvasApiObj: CanvasApiClass | null = null
+  const [canvasApiObj, setCanvasApiObj] = useState<CanvasApiClass | null>(null)
 
   const mouseUpHandler = () => {
     movingAreaIndex = null
@@ -115,7 +115,7 @@ const AreaSelectContainer: FC<IProps> = ({
     const canvasElement = document.getElementById(id) as HTMLCanvasElement
 
     if (canvasElement) {
-      canvasApiObj = new CanvasApiClass(canvasElement, borderWidth, borderColor)
+      setCanvasApiObj(new CanvasApiClass(canvasElement, borderWidth, borderColor))
 
       canvasElement.addEventListener('area-selected', ((e: CustomEvent) => {
         setAreasList(oldList => {
@@ -124,6 +124,10 @@ const AreaSelectContainer: FC<IProps> = ({
       }) as EventListener)
     }
   }, [])
+
+  useEffect(() => {
+    canvasApiObj?.setLineColor(borderColor)
+  }, [borderColor])
 
   return (
     <div
