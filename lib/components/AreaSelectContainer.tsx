@@ -10,7 +10,8 @@ export interface IProps {
   borderWidth?: number,
   borderColor?: string,
   imageUrl: string,
-  saveData: (data: IAreaData) => void
+  saveData: (data: IAreaData) => void,
+  initAreas?: IAreaData[]
 }
 
 export interface ISelectedAreaCoordinates {
@@ -24,6 +25,11 @@ const resizingItemStartPos = {
   direction: '',
 }
 
+/*
+* Add 'mounted' to prevent double calling useEffect
+* Issue: https://stackoverflow.com/questions/72489140/react-18-strict-mode-causing-component-to-render-twice
+ */
+let mounted = false
 let movingAreaIndex: number | null = null
 let resizingAreaIndex: number | null = null
 
@@ -35,8 +41,9 @@ const AreaSelectContainer: FC<IProps> = ({
   borderColor = 'black',
   imageUrl = '',
   saveData,
+  initAreas = [],
 }) => {
-  const [areasList, setAreasList] = useState<ISelectedAreaCoordinates[]>([])
+  const [areasList, setAreasList] = useState<IAreaData[]>([ ...initAreas ])
   const [canvasApiObj, setCanvasApiObj] = useState<CanvasApiClass | null>(null)
 
   const mouseUpHandler = () => {
@@ -49,8 +56,8 @@ const AreaSelectContainer: FC<IProps> = ({
       setAreasList(areas => {
         return areas.map((area, index) => {
           if (index === movingAreaIndex) {
-            area.x += e.movementX / 2
-            area.y += e.movementY / 2
+            area.coordinates.x += e.movementX / 2
+            area.coordinates.y += e.movementY / 2
           }
 
           return area
@@ -64,18 +71,18 @@ const AreaSelectContainer: FC<IProps> = ({
 
           switch (resizingItemStartPos.direction) {
             case 'left':
-              area.x += e.movementX / 2
-              area.width -= e.movementX / 2
+              area.coordinates.x += e.movementX / 2
+              area.coordinates.width -= e.movementX / 2
               break
             case 'right':
-              area.width += e.movementX / 2
+              area.coordinates.width += e.movementX / 2
               break
             case 'top':
-              area.y += e.movementY / 2
-              area.height -= e.movementY / 2
+              area.coordinates.y += e.movementY / 2
+              area.coordinates.height -= e.movementY / 2
               break
             case 'down':
-              area.height += e.movementY / 2
+              area.coordinates.height += e.movementY / 2
           }
 
           areas[resizingAreaIndex] = area
@@ -110,7 +117,7 @@ const AreaSelectContainer: FC<IProps> = ({
   }
 
   useEffect(() => {
-    if (canvasApiObj) return
+    if (canvasApiObj || mounted) return
 
     const canvasElement = document.getElementById(id) as HTMLCanvasElement
 
@@ -119,10 +126,20 @@ const AreaSelectContainer: FC<IProps> = ({
 
       canvasElement.addEventListener('area-selected', ((e: CustomEvent) => {
         setAreasList(oldList => {
-          return [...oldList, { ...e.detail }]
+          const areaItem = {
+            index: oldList.length,
+            lineWidth: borderWidth,
+            color: borderColor,
+            comment: '',
+            coordinates: { ...e.detail },
+          }
+
+          return [ ...oldList, areaItem ]
         })
       }) as EventListener)
     }
+
+    mounted = true
   }, [])
 
   useEffect(() => {
@@ -147,10 +164,7 @@ const AreaSelectContainer: FC<IProps> = ({
       { areasList.map((areaItem, i) => (
         <SelectedAreaBlock
           key={ i }
-          index={ i }
-          borderWidth={ borderWidth }
-          borderColor={ borderColor }
-          coordinates={ areaItem }
+          areaData={ areaItem }
           mouseDownHandler={ mouseDownHandler }
           deleteHandler={ areaDeleteHandler }
           saveData={ saveData }

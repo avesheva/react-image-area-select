@@ -2,19 +2,10 @@ import React, { FC, FormEvent, useState } from 'react'
 import { DirectionType, OperationType, IAreaData } from '../types'
 
 export interface Iprops {
-  index: number,
-  borderWidth: number,
-  borderColor: string,
-  coordinates: {
-    x: number,
-    y: number,
-    width: number,
-    height: number,
-  },
   mouseDownHandler: (e: React.MouseEvent, i: number, operation: OperationType, direction?: DirectionType) => void,
   deleteHandler: (i: number) => void,
   saveData: (data: IAreaData) => void,
-  comment?: string,
+  areaData: IAreaData,
 }
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
@@ -25,12 +16,9 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
     commentText = e.currentTarget.textContent || ''
   }
   const commentFieldBlurHandler = () => {
-    const data: IAreaData = {
-      index: props.index,
-      coordinates: props.coordinates,
+    const data = {
+      ...props.areaData,
       comment: commentText,
-      lineWidth: props.borderWidth,
-      color: props.borderColor,
     }
 
     props.saveData(data)
@@ -39,31 +27,31 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
   return (
     <div style={{
       position: 'absolute',
-      width: `${ props.coordinates.width }px`,
-      height: `${ props.coordinates.height }px`,
-      top: `${ props.coordinates.y }px`,
-      left: `${ props.coordinates.x }px`,
+      width: `${ props.areaData.coordinates.width }px`,
+      height: `${ props.areaData.coordinates.height }px`,
+      top: `${ props.areaData.coordinates.y }px`,
+      left: `${ props.areaData.coordinates.x }px`,
     }}>
       {/* Top border */}
       <div
         style={{
-          height: `${ props.borderWidth }px`,
-          background: props.borderColor,
+          height: `${ props.areaData.lineWidth }px`,
+          background: props.areaData.color,
           top: 0,
           cursor: 'ns-resize',
         }}
         onMouseDown={ (e) => {
           e.stopPropagation()
-          props.mouseDownHandler(e, props.index, 'resize', 'top')
+          props.mouseDownHandler(e, props.areaData.index, 'resize', 'top')
         }}
         onMouseMove={ (e) => { e.stopPropagation() } }
       />
       {/* Left border */}
       <div
         style={{
-          width: `${ props.borderWidth }px`,
+          width: `${ props.areaData.lineWidth }px`,
           height: '100%',
-          background: props.borderColor,
+          background: props.areaData.color,
           position: 'absolute',
           left: 0,
           bottom: 0,
@@ -71,7 +59,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         }}
         onMouseDown={ (e) => {
           e.stopPropagation()
-          props.mouseDownHandler(e, props.index, 'resize', 'left')
+          props.mouseDownHandler(e, props.areaData.index, 'resize', 'left')
         }}
         onMouseMove={ (e) => { e.stopPropagation() } }
       />
@@ -88,7 +76,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
 
           setCursor('grabbing')
 
-          props.mouseDownHandler(e, props.index, 'dragging')
+          props.mouseDownHandler(e, props.areaData.index, 'dragging')
         }}
         onMouseUp={ () => {
           setCursor('grab')
@@ -97,7 +85,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       >
         <button
           style={{ position: 'absolute', top: 0, right: 0 }}
-          onClick={ () => { props.deleteHandler(props.index) } }
+          onClick={ () => { props.deleteHandler(props.areaData.index) } }
         >
           &times;
         </button>
@@ -116,16 +104,16 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           onInput={ inputHandler }
           onBlur={ commentFieldBlurHandler }
         >
-          { props.comment }
+          { props.areaData.comment }
         </div>
       </div>
 
       {/* Right border */}
       <div
         style={{
-          width: `${ props.borderWidth }px`,
+          width: `${ props.areaData.lineWidth }px`,
           height: '100%',
-          background: props.borderColor,
+          background: props.areaData.color,
           position: 'absolute',
           right: 0,
           bottom: 0,
@@ -133,7 +121,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         }}
         onMouseDown={ (e) => {
           e.stopPropagation()
-          props.mouseDownHandler(e, props.index, 'resize', 'right')
+          props.mouseDownHandler(e, props.areaData.index, 'resize', 'right')
         }}
         onMouseMove={ (e) => { e.stopPropagation() } }
       />
@@ -141,16 +129,16 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       {/* Bottom border */}
       <div
         style={{
-          height: `${ props.borderWidth }px`,
+          height: `${ props.areaData.lineWidth }px`,
           width: '100%',
-          background: props.borderColor,
+          background: props.areaData.color,
           position: 'absolute',
           bottom: 0,
           cursor: 'ns-resize',
         }}
         onMouseDown={ (e) => {
           e.stopPropagation()
-          props.mouseDownHandler(e, props.index, 'resize', 'down')
+          props.mouseDownHandler(e, props.areaData.index, 'resize', 'down')
         }}
         onMouseMove={ (e) => { e.stopPropagation() } }
       />
