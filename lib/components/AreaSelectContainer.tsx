@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useState, useRef } from 'react'
 import CanvasApiClass from '../utils/CanvasApiClass'
 import SelectedAreaBlock from './SelectedAreaBlock'
 import { DirectionType, OperationType, IAreaData } from '../types'
@@ -45,6 +45,8 @@ const AreaSelectContainer: FC<IProps> = ({
 }) => {
   const [areasList, setAreasList] = useState<IAreaData[]>([ ...initAreas ])
   const [canvasApiObj, setCanvasApiObj] = useState<CanvasApiClass | null>(null)
+  const areaColor = useRef(borderColor)
+  const areaLineWidth = useRef(borderWidth)
 
   const mouseUpHandler = () => {
     movingAreaIndex = null
@@ -128,8 +130,8 @@ const AreaSelectContainer: FC<IProps> = ({
         setAreasList(oldList => {
           const areaItem = {
             index: oldList.length,
-            lineWidth: borderWidth,
-            color: borderColor,
+            lineWidth: areaLineWidth.current,
+            color: areaColor.current,
             comment: '',
             coordinates: { ...e.detail },
           }
@@ -144,7 +146,13 @@ const AreaSelectContainer: FC<IProps> = ({
 
   useEffect(() => {
     canvasApiObj?.setLineColor(borderColor)
+    areaColor.current = borderColor
   }, [borderColor])
+
+  useEffect(() => {
+    canvasApiObj?.setLineWidth(borderWidth)
+    areaLineWidth.current = borderWidth
+  }, [borderWidth])
 
   return (
     <div
