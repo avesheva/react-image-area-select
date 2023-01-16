@@ -42,6 +42,15 @@ const AreaSelectContainer: FC<IProps> = ({
   const areaColor = useRef(borderColor)
   const areaLineWidth = useRef(borderWidth)
 
+  const updateAreasList = (area: IAreaData, index: number) => {
+    setAreasList(oldList => oldList.map(a => {
+      if (index === a.index) {
+        return area
+      }
+      return a
+    }))
+  }
+
   const mouseUpHandler = () => {
     movingAreaIndex = null
     resizingAreaIndex = null
@@ -143,11 +152,25 @@ const AreaSelectContainer: FC<IProps> = ({
   useEffect(() => {
     canvasApiObj?.setLineColor(borderColor)
     areaColor.current = borderColor
+
+    if (activeAreaIndex !== null) {
+      const a = { ...areasList[activeAreaIndex] }
+      a.color = borderColor
+
+      updateAreasList(a, activeAreaIndex)
+    }
   }, [borderColor])
 
   useEffect(() => {
     canvasApiObj?.setLineWidth(borderWidth)
     areaLineWidth.current = borderWidth
+
+    if (activeAreaIndex !== null) {
+      const a = areasList[activeAreaIndex]
+      a.lineWidth = borderWidth
+
+      updateAreasList(a, activeAreaIndex)
+    }
   }, [borderWidth])
 
   return (
