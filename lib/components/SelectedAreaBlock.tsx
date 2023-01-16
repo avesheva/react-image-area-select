@@ -6,6 +6,7 @@ export interface Iprops {
   deleteHandler: (i: number) => void,
   saveData: (data: IAreaData) => void,
   areaData: IAreaData,
+  isActive: boolean,
 }
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
@@ -70,6 +71,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           height: '100%',
           cursor: cursor,
         }}
+        className={ props.isActive ? 'active-area' : '' }
         onMouseDown={ (e) => {
           e.stopPropagation()
           if (e.button === 2) return // If mouse right button clicked

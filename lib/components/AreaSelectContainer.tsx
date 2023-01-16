@@ -14,13 +14,6 @@ export interface IProps {
   initAreas?: IAreaData[]
 }
 
-export interface ISelectedAreaCoordinates {
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-}
-
 const resizingItemStartPos = {
   direction: '',
 }
@@ -45,6 +38,7 @@ const AreaSelectContainer: FC<IProps> = ({
 }) => {
   const [areasList, setAreasList] = useState<IAreaData[]>([ ...initAreas ])
   const [canvasApiObj, setCanvasApiObj] = useState<CanvasApiClass | null>(null)
+  const [activeAreaIndex, setActiveAreaIndex] = useState<number | null>(null)
   const areaColor = useRef(borderColor)
   const areaLineWidth = useRef(borderWidth)
 
@@ -101,6 +95,8 @@ const AreaSelectContainer: FC<IProps> = ({
     operation: OperationType,
     direction?: DirectionType,
   ) => {
+    setActiveAreaIndex(index)
+
     if (operation === 'dragging') {
       movingAreaIndex = index
     } else if (direction && operation === 'resize') {
@@ -164,6 +160,7 @@ const AreaSelectContainer: FC<IProps> = ({
         position: 'relative',
         borderStyle: 'solid',
       }}
+      onMouseDown={() => { setActiveAreaIndex(null) }}
       onMouseMove={ mouseMoveHandler }
       onMouseUp={ mouseUpHandler }
     >
@@ -172,6 +169,7 @@ const AreaSelectContainer: FC<IProps> = ({
       { areasList.map((areaItem, i) => (
         <SelectedAreaBlock
           key={ i }
+          isActive={ areaItem.index === activeAreaIndex }
           areaData={ areaItem }
           mouseDownHandler={ mouseDownHandler }
           deleteHandler={ areaDeleteHandler }
