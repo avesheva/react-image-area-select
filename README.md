@@ -2,5 +2,4 @@
 
 React typescript lib, with ability to select area on the image and leave comments.
 
-[screencast-localhost_5173-2023.01.17-22_19_54.webm](https://user-images.githubusercontent.com/12416010/213006843-99b40d84-76b8-4638-8614-a04f91bfde07.webm)
-
+[screencast-localhost_5173-2023.01.17-22_55_14.webm](https://user-images.githubusercontent.com/12416010/213012943-e11ba50a-4bc7-4d84-8e22-8b637d48ebff.webm)
