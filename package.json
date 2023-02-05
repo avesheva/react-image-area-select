@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "React lib, with ability to select area on the image and leave comments.",
   "homepage": "https://github.com/avesheva/react-image-area-select",
-  "author": "Andrii Shevchenko Name <shevchenkoandrii.dev@gmail.com>",
+  "author": "Andrii Shevchenko <shevchenkoandrii.dev@gmail.com>",
   "license": "MIT",
   "keywords": [
     "react",
@@ -23,20 +23,22 @@
     "dist"
   ],
   "type": "module",
-  "types": "./dist/fileWithTypes.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "vite build && tsc --emitDeclarationOnly",
     "preview": "vite preview",
     "lint": "eslint lib src --ext .ts,.tsx",
     "test": "jest",
     "prepare": "husky install"
   },
-  "dependencies": {
+  "peerDependencies": {
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@types/jest": "^29.2.4",

@@ -10,14 +10,7 @@ export default defineConfig({
       fileName: format => `react-image-area-select.${ format }.js`,
     },
     rollupOptions: {
-      external: ['React'],
-      output: {
-        globals: {
-          react: 'React',
-        },
-      },
+      external: ['react'],
     },
   },
-
-  plugins: [react()],
 })
