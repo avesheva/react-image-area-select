@@ -86,7 +86,11 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         onContextMenu={ (e) => { e.stopPropagation() }}
       >
         <button
-          style={{ position: 'absolute', top: 0, right: 0 }}
+          style={{
+            position: 'absolute',
+            right: `${ props.areaData?.lineWidth }px`,
+            top: `${ props.areaData?.lineWidth }px`,
+          }}
           onClick={ () => { props.deleteHandler(props.areaData.index) } }
         >
           &times;
@@ -99,7 +103,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
             position: 'absolute',
             top: 'calc(100% + 5px)',
             maxWidth: '200px',
-            minWidth: '80px',
+            minWidth: '120px',
             padding: '0.5rem',
             background: 'white',
           }}

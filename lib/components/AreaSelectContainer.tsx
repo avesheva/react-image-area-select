@@ -31,7 +31,7 @@ const AreaSelectContainer: FC<IProps> = ({
   width = 400,
   height = 300,
   borderWidth = 2,
-  borderColor = 'black',
+  borderColor = '#000000',
   imageUrl = '',
   saveData,
   initAreas = [],
@@ -181,7 +181,6 @@ const AreaSelectContainer: FC<IProps> = ({
         background: `url('${ imageUrl }') no-repeat center`,
         backgroundSize: 'contain',
         position: 'relative',
-        borderStyle: 'solid',
       }}
       onMouseDown={() => { setActiveAreaIndex(null) }}
       onMouseMove={ mouseMoveHandler }
