@@ -11,6 +11,7 @@ export interface Iprops {
 
 const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
   const [cursor, setCursor] = useState<'grab' | 'grabbing'>('grab')
+  const lineWidth = props.areaData.lineWidth > 0 ? props.areaData.lineWidth : 1
   let commentText = ''
 
   const inputHandler = (e: FormEvent<HTMLDivElement>) => {
@@ -36,7 +37,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       {/* Top border */}
       <div
         style={{
-          height: `${ props.areaData.lineWidth }px`,
+          height: `${ lineWidth }px`,
           background: props.areaData.color,
           top: 0,
           cursor: 'ns-resize',
@@ -50,7 +51,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       {/* Left border */}
       <div
         style={{
-          width: `${ props.areaData.lineWidth }px`,
+          width: `${ lineWidth }px`,
           height: '100%',
           background: props.areaData.color,
           position: 'absolute',
@@ -88,8 +89,8 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         <button
           style={{
             position: 'absolute',
-            right: `${ props.areaData?.lineWidth }px`,
-            top: `${ props.areaData?.lineWidth }px`,
+            right: `${ lineWidth }px`,
+            top: `${ lineWidth }px`,
           }}
           onClick={ () => { props.deleteHandler(props.areaData.index) } }
         >
@@ -117,7 +118,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       {/* Right border */}
       <div
         style={{
-          width: `${ props.areaData.lineWidth }px`,
+          width: `${ lineWidth }px`,
           height: '100%',
           background: props.areaData.color,
           position: 'absolute',
@@ -135,7 +136,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
       {/* Bottom border */}
       <div
         style={{
-          height: `${ props.areaData.lineWidth }px`,
+          height: `${ lineWidth }px`,
           width: '100%',
           background: props.areaData.color,
           position: 'absolute',
