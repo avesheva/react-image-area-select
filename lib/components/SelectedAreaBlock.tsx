@@ -27,13 +27,17 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
   }
 
   return (
-    <div style={{
-      position: 'absolute',
-      width: `${ props.areaData.coordinates.width }px`,
-      height: `${ props.areaData.coordinates.height }px`,
-      top: `${ props.areaData.coordinates.y }px`,
-      left: `${ props.areaData.coordinates.x }px`,
-    }}>
+    <div
+      style={{
+        position: 'absolute',
+        width: `${ props.areaData.coordinates.width }px`,
+        height: `${ props.areaData.coordinates.height }px`,
+        top: `${ props.areaData.coordinates.y }px`,
+        left: `${ props.areaData.coordinates.x }px`,
+        userSelect: 'none',
+      }}
+      className={ props.isActive ? 'active-area' : '' }
+    >
       {/* Top border */}
       <div
         style={{
@@ -72,7 +76,6 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
           height: '100%',
           cursor: cursor,
         }}
-        className={ props.isActive ? 'active-area' : '' }
         onMouseDown={ (e) => {
           e.stopPropagation()
           if (e.button === 2) return // If mouse right button clicked

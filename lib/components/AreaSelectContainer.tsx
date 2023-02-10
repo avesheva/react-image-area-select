@@ -53,6 +53,12 @@ const AreaSelectContainer: FC<IProps> = ({
   }
 
   const mouseUpHandler = () => {
+    if (movingAreaIndex !== null) {
+      saveData(areasList[movingAreaIndex])
+    } else if (resizingAreaIndex !== null) {
+      saveData(areasList[resizingAreaIndex])
+    }
+
     movingAreaIndex = null
     resizingAreaIndex = null
   }
@@ -85,37 +91,31 @@ const AreaSelectContainer: FC<IProps> = ({
         mouseUpHandler()
       }
     } else if (resizingAreaIndex !== null) {
-      const inArea = checkIsInWorkingArea({ ...areasList[resizingAreaIndex] }, e)
+      setAreasList((areas) => {
+        if (resizingAreaIndex !== null) {
+          const area = { ...areasList[resizingAreaIndex] }
 
-      if (inArea) {
-        setAreasList((areas) => {
-          if (resizingAreaIndex !== null) {
-            const area = { ...areasList[resizingAreaIndex] }
-
-            switch (resizingItemStartPos.direction) {
-              case 'left':
-                area.coordinates.x += e.movementX / 2
-                area.coordinates.width -= e.movementX / 2
-                break
-              case 'right':
-                area.coordinates.width += e.movementX / 2
-                break
-              case 'top':
-                area.coordinates.y += e.movementY / 2
-                area.coordinates.height -= e.movementY / 2
-                break
-              case 'down':
-                area.coordinates.height += e.movementY / 2
-            }
-
-            areas[resizingAreaIndex] = area
+          switch (resizingItemStartPos.direction) {
+            case 'left':
+              area.coordinates.x += e.movementX / 2
+              area.coordinates.width -= e.movementX / 2
+              break
+            case 'right':
+              area.coordinates.width += e.movementX / 2
+              break
+            case 'top':
+              area.coordinates.y += e.movementY / 2
+              area.coordinates.height -= e.movementY / 2
+              break
+            case 'down':
+              area.coordinates.height += e.movementY / 2
           }
 
-          return [ ...areas ]
-        })
-      } else {
-        mouseUpHandler()
-      }
+          areas[resizingAreaIndex] = area
+        }
+
+        return [ ...areas ]
+      })
     }
   }
 
@@ -208,6 +208,7 @@ const AreaSelectContainer: FC<IProps> = ({
       onMouseDown={() => { setActiveAreaIndex(null) }}
       onMouseMove={ mouseMoveHandler }
       onMouseUp={ mouseUpHandler }
+      onMouseLeave={ mouseUpHandler }
     >
       <canvas id={ id } width={ width } height={ height } />
 
