@@ -91,6 +91,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
             position: 'absolute',
             right: `${ lineWidth }px`,
             top: `${ lineWidth }px`,
+            userSelect: 'none',
           }}
           onClick={ () => { props.deleteHandler(props.areaData.index) } }
         >

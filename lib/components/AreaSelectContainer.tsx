@@ -25,6 +25,7 @@ const resizingItemStartPos = {
 let mounted = false
 let movingAreaIndex: number | null = null
 let resizingAreaIndex: number | null = null
+let workingAreaCoordinates: DOMRect
 
 const AreaSelectContainer: FC<IProps> = ({
   id = 'imageSelectArea',
@@ -56,45 +57,65 @@ const AreaSelectContainer: FC<IProps> = ({
     resizingAreaIndex = null
   }
 
+  const checkIsInWorkingArea = ({ coordinates }: IAreaData, { movementX, movementY }: React.MouseEvent) => {
+    if (!workingAreaCoordinates) return
+
+    return  coordinates.x + movementX > 0
+      && coordinates.y + movementY > 0
+      && (coordinates.y + movementY + coordinates.height < workingAreaCoordinates.height)
+      && (coordinates.x + movementX + coordinates.width < workingAreaCoordinates.width)
+  }
+
   const mouseMoveHandler = (e: React.MouseEvent) => {
     if (movingAreaIndex !== null) {
-      setAreasList(areas => {
-        return areas.map((area, index) => {
-          if (index === movingAreaIndex) {
-            area.coordinates.x += e.movementX / 2
-            area.coordinates.y += e.movementY / 2
-          }
+      const inArea = checkIsInWorkingArea({ ...areasList[movingAreaIndex] }, e)
 
-          return area
-        })
-      })
-
-    } else if (resizingAreaIndex !== null) {
-      setAreasList((areas) => {
-        if (resizingAreaIndex !== null) {
-          const area = { ...areasList[resizingAreaIndex] }
-
-          switch (resizingItemStartPos.direction) {
-            case 'left':
+      if (inArea) {
+        setAreasList(areas => {
+          return areas.map((area, index) => {
+            if (index === movingAreaIndex) {
               area.coordinates.x += e.movementX / 2
-              area.coordinates.width -= e.movementX / 2
-              break
-            case 'right':
-              area.coordinates.width += e.movementX / 2
-              break
-            case 'top':
               area.coordinates.y += e.movementY / 2
-              area.coordinates.height -= e.movementY / 2
-              break
-            case 'down':
-              area.coordinates.height += e.movementY / 2
+            }
+
+            return area
+          })
+        })
+      } else {
+        mouseUpHandler()
+      }
+    } else if (resizingAreaIndex !== null) {
+      const inArea = checkIsInWorkingArea({ ...areasList[resizingAreaIndex] }, e)
+
+      if (inArea) {
+        setAreasList((areas) => {
+          if (resizingAreaIndex !== null) {
+            const area = { ...areasList[resizingAreaIndex] }
+
+            switch (resizingItemStartPos.direction) {
+              case 'left':
+                area.coordinates.x += e.movementX / 2
+                area.coordinates.width -= e.movementX / 2
+                break
+              case 'right':
+                area.coordinates.width += e.movementX / 2
+                break
+              case 'top':
+                area.coordinates.y += e.movementY / 2
+                area.coordinates.height -= e.movementY / 2
+                break
+              case 'down':
+                area.coordinates.height += e.movementY / 2
+            }
+
+            areas[resizingAreaIndex] = area
           }
 
-          areas[resizingAreaIndex] = area
-        }
-
-        return [ ...areas ]
-      })
+          return [ ...areas ]
+        })
+      } else {
+        mouseUpHandler()
+      }
     }
   }
 
@@ -129,6 +150,7 @@ const AreaSelectContainer: FC<IProps> = ({
     const canvasElement = document.getElementById(id) as HTMLCanvasElement
 
     if (canvasElement) {
+      workingAreaCoordinates = canvasElement.getBoundingClientRect()
       setCanvasApiObj(new CanvasApiClass(canvasElement, borderWidth, borderColor))
 
       canvasElement.addEventListener('area-selected', ((e: CustomEvent) => {
@@ -181,6 +203,7 @@ const AreaSelectContainer: FC<IProps> = ({
         background: `url('${ imageUrl }') no-repeat center`,
         backgroundSize: 'contain',
         position: 'relative',
+        border: 'solid 2px',
       }}
       onMouseDown={() => { setActiveAreaIndex(null) }}
       onMouseMove={ mouseMoveHandler }
