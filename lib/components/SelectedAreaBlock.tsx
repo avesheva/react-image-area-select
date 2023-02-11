@@ -36,7 +36,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         left: `${ props.areaData.coordinates.x }px`,
         userSelect: 'none',
       }}
-      className={ props.isActive ? 'active-area' : '' }
+      className={ `selected-area ${ props.isActive ? 'active-area' : '' }` }
     >
       {/* Top border */}
       <div
@@ -96,6 +96,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
             top: `${ lineWidth }px`,
             userSelect: 'none',
           }}
+          className="delete-button"
           onClick={ () => { props.deleteHandler(props.areaData.index) } }
         >
           &times;
@@ -104,6 +105,7 @@ const SelectedAreaBlock: FC<Iprops> = (props: Iprops) => {
         <div
           contentEditable
           suppressContentEditableWarning
+          className="area-comment"
           style={{
             position: 'absolute',
             top: 'calc(100% + 5px)',

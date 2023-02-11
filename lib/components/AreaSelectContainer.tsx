@@ -10,7 +10,7 @@ export interface IProps {
   borderWidth?: number,
   borderColor?: string,
   imageUrl: string,
-  saveData: (data: IAreaData) => void,
+  saveData?: (data: IAreaData) => void,
   initAreas?: IAreaData[]
 }
 
@@ -34,7 +34,7 @@ const AreaSelectContainer: FC<IProps> = ({
   borderWidth = 2,
   borderColor = '#000000',
   imageUrl = '',
-  saveData,
+  saveData = () => {},
   initAreas = [],
 }) => {
   const [areasList, setAreasList] = useState<IAreaData[]>([ ...initAreas ])
