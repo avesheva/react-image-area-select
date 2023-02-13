@@ -10,7 +10,8 @@
     "javascript",
     "typescript",
     "canvas",
-    "selected area"
+    "image select area",
+    "image comments"
   ],
   "private": false,
   "main": "dist/react-image-area-select.umd.js",
