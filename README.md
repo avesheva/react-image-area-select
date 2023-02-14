@@ -62,7 +62,7 @@ interface IAreaData {
 | borderWidth? (px) | Number                    | 2                        | Selected area border width |
 | borderColor?      | String                    | #000000                  | Selected area border color |
 | initAreas?        | IAreaData[]               | imageSelectArea          | Preinited areas values     |
-| saveData?         | (data: IAreaData) => void | () => {} -               | Fires on comment field blur event, or area position or size changing |
+| saveData?         | (data: IAreaData) => void | () => {}                 | Fires on comment field blur event, or area position or size changing |
 
 ## Styling
 Styling on you. Here classes you can use for that: 
