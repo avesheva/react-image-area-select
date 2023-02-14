@@ -26,6 +26,6 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "react-image-area-select": "^1.0.0"
+    "react-image-area-select": "^1.0.1"
   }
 }

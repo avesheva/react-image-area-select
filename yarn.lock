@@ -1996,10 +1996,10 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-image-area-select@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-image-area-select/-/react-image-area-select-1.0.0.tgz#b24fd6a9c26214f102edb154030bbe7970887a9b"
-  integrity sha512-9KbnuA+IfizBNnHoAWX0DlBlhsqmRaeGXJLMaD1rUftxx6zfs6oe/cAjtv02Emud6EOTK4zrAsZPn19eE1VlOg==
+react-image-area-select@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-image-area-select/-/react-image-area-select-1.0.1.tgz#f7a2ca9a7fc37372f2dbffca01af7f33d79d3f1f"
+  integrity sha512-xwU9eRthHOVzCj5OHZY1yOLGM0dvWJgqtIGz8Ic+KSVraezZ/oUOKMK4egzYS2ZLiRe8Q/AR7GCNsUN3ER8aIg==
 
 react-is@^16.13.1:
   version "16.13.1"
