@@ -9,7 +9,7 @@ export interface IProps {
   height?: number,
   borderWidth?: number,
   borderColor?: string,
-  imageUrl: string,
+  imageUrl?: string,
   saveData?: (data: IAreaData) => void,
   initAreas?: IAreaData[]
 }
@@ -203,7 +203,6 @@ const AreaSelectContainer: FC<IProps> = ({
         background: `url('${ imageUrl }') no-repeat center`,
         backgroundSize: 'contain',
         position: 'relative',
-        border: 'solid 2px',
       }}
       onMouseDown={() => { setActiveAreaIndex(null) }}
       onMouseMove={ mouseMoveHandler }
