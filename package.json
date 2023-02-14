@@ -1,6 +1,6 @@
 {
   "name": "react-image-area-select",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React lib, with ability to select area on the image and leave comments.",
   "homepage": "https://github.com/avesheva/react-image-area-select",
   "author": "Andrii Shevchenko <shevchenkoandrii.dev@gmail.com>",
