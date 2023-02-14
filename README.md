@@ -4,6 +4,9 @@ React typescript lib, with ability to select area on the image and leave comment
 
 [screencast-localhost_5173-2023.01.17-22_55_14.webm](https://user-images.githubusercontent.com/12416010/213012943-e11ba50a-4bc7-4d84-8e22-8b637d48ebff.webm)
 
+## Demo
+[**Live Demo**](https://avesheva.github.io/react-image-area-select/)
+
 ## Installation
 ```shell
 # with npm
@@ -52,7 +55,7 @@ interface IAreaData {
 ## Props
 | NAME              | TYPE                      | DEFAULT                  | DESCRIPTION                |
 |-------------------|---------------------------|--------------------------|----------------------------|
-| imageUrl          | String                    |              -           | Image url. Required        |
+| imageUrl?         | String                    |              " "         | Image url                  |
 | id?               | String                    | imageSelectArea          | Component id               |
 | width? (px)       | Number                    | 400                      | Component width            |
 | height? (px)      | Number                    | 300                      | Component height           |
